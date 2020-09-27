@@ -13,6 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' =>'user'], function() {
+    Route::post('', 'UserController@create')->name('user.create');
+
+    Route::group(['middleware' => 'auth.basic.once'], function() {
+        Route::get('self', 'UserController@getSelf')->name('user.get');
+        Route::put('self', 'UserController@updateSelf')->name('user.update');
+    });
 });

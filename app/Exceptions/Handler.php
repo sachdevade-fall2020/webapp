@@ -3,17 +3,29 @@
 namespace App\Exceptions;
 
 use Exception;
+use App\Traits\RestTrait;
+use App\Traits\RestExceptionHandlerTrait;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException as BaseValidationException;
 
 class Handler extends ExceptionHandler
 {
+    use RestTrait, RestExceptionHandlerTrait;
+
     /**
      * A list of the exception types that are not reported.
      *
      * @var array
      */
     protected $dontReport = [
-        //
+        \Illuminate\Auth\AuthenticationException::class,
+        \Illuminate\Auth\Access\AuthorizationException::class,
+        \Symfony\Component\HttpKernel\Exception\HttpException::class,
+        \Illuminate\Database\Eloquent\ModelNotFoundException::class,
+        \Illuminate\Session\TokenMismatchException::class,
+        \Illuminate\Validation\ValidationException::class,
+        
+        BadRequestException::class,
     ];
 
     /**
@@ -31,11 +43,13 @@ class Handler extends ExceptionHandler
      *
      * @param  \Exception  $exception
      * @return void
-     *
-     * @throws \Exception
      */
     public function report(Exception $exception)
     {
+        if ($this->shouldReport($exception)) {
+            //
+        }
+        
         parent::report($exception);
     }
 
@@ -44,12 +58,52 @@ class Handler extends ExceptionHandler
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $exception
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Exception
+     * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        if ($this->isApiCall($request) || $this->isAjaxCall($request)) {
+            return $this->renderForRest($request, $exception);
+        }
+        
+        return $this->renderForWeb($request, $exception);
+    }
+
+    /**
+     * Render an exception into an HTTP response for a RESTful request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception  $e
+     * @return Illuminate\Http\JsonResponse
+     */
+    protected function renderForRest($request, $e)
+    {
+        switch ($e)
+        {
+            case ($e instanceof ModelNotFoundException):
+                return response()->json($e->getMessage(), 404);
+
+            case ($e instanceof BaseValidationException):
+                return response()->json($e->errors()->toArray(), 400);
+
+            case ($e instanceof BadRequestException):
+                return response()->json($e->getMessage(), 400);
+
+            case ($e instanceof InvalidCredentialsException):
+                return response()->json($e->getMessage(), 400);
+
+            default:
+                return $this->renderRestException($request, $e);
+        }
+    }
+
+    /**
+     * @param $request
+     * @param Exception $e
+     * @return $this|\Symfony\Component\HttpFoundation\Response
+     */
+    protected function renderForWeb($request, Exception $e)
+    {
+        return parent::render($request, $e);
     }
 }
