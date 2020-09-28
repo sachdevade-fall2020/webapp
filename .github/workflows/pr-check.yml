@@ -1,12 +1,13 @@
+---
 name: Pull Request Check Workflow
 
 on:
   pull_request:
-    branches: 
-    - master
+    branches: [ master ]
 
 jobs:
   pr-check:
+    # specify runner
     runs-on: ubuntu-latest
 
     # docker services required
