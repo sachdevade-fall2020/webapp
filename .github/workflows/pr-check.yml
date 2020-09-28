@@ -1,20 +1,14 @@
 ---
-name: Pull Request Check Workflow
+name: pr-check-workflow
 
 on:
   pull_request:
-    branches:
-    - master
+    branches: [ master ]
 
 jobs:
   pr-check:
-    # specify runner
     runs-on: ubuntu-latest
-
-    # docker services required
     services:
-
-      # mysql db container
       mysql:
         image: mysql:5.7
         env:
@@ -27,19 +21,12 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
-
     steps:
-
-    # checkout code
     - name: Checkout Repository
       uses: actions/checkout@v2
-    
-    # get composer cache dir
     - name: Get Composer Cache Directory
       id: composer-cache
       run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-    # cache
     - name: Action Cache
       uses: actions/cache@v2
       id: actions-cache
@@ -47,33 +34,21 @@ jobs:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
         restore-keys: ${{ runner.os }}-composer-
-
-    # cache vendor
     - name: Cache PHP Dependencies
       uses: actions/cache@v2
       id: vendor-cache
       with:
         path: vendor
         key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
-    
-    # copy .env
     - name: Create .env
       run: php -r "file_exists('.env') || copy('.env.testing', '.env');"
-
-    # install compser dependencies
     - name: Install Dependencies
       if: steps.vendor-cache.outputs.cache-hit != 'true'
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-
-    # generate application key
     - name: Generate Application Key
       run: php artisan key:generate
-
-    # fix directory permissions
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
-
-    #db migration
     - name: Migrate Database
       env:
         DB_CONNECTION: mysql
@@ -82,12 +57,8 @@ jobs:
         DB_USER: root
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       run: php artisan migrate
-
-    # clear cache & config
     - name: Clear Cache & Config
       run: php artisan cache:clear && php artisan config:clear
-
-    # execute unit & feature tests
     - name: Execute Tests (Unit and Feature tests) via PHPUnit
       env:
         DB_CONNECTION: mysql
