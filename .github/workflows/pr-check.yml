@@ -3,7 +3,8 @@ name: Pull Request Check Workflow
 
 on:
   pull_request:
-    branches: [ master ]
+    branches:
+    - master
 
 jobs:
   pr-check:
@@ -30,7 +31,8 @@ jobs:
     steps:
 
     # checkout code
-    - uses: actions/checkout@v2
+    - name: Checkout Repository
+      uses: actions/checkout@v2
     
     # get composer cache dir
     - name: Get Composer Cache Directory
@@ -38,7 +40,8 @@ jobs:
       run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
     # cache
-    - uses: actions/cache@v2
+    - name: Action Cache
+      uses: actions/cache@v2
       id: actions-cache
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
