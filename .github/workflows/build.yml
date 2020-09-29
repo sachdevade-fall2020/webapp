@@ -23,7 +23,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Get Composer Cache Directory 2
+    - name: Get Composer Cache Directory
       id: composer-cache
       run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       
@@ -61,7 +61,7 @@ jobs:
         DB_DATABASE: csye6225_test
         DB_PORT: 3306
         DB_USER: root
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_PASSWORD: Pa$$w0rd
       run: php artisan migrate
       
     - name: Clear cache & config
@@ -71,7 +71,7 @@ jobs:
       env:
         DB_CONNECTION: mysql
         DB_DATABASE: csye6225_test
-        DB_PORT: 3307
+        DB_PORT: 3306
         DB_USER: root
         DB_PASSWORD: Pa$$w0rd
       run: vendor/bin/phpunit
