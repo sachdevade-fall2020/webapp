@@ -1,27 +1,13 @@
-
-name: Laravel
+name: pull request check workflow
 
 on:
   pull_request:
-    branches: [ master ]
+    branches:
+    - master
 
 jobs:
-  laravel-tests:
-
+  pr-check:
     runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          MYSQL_DATABASE: csye6225_test
-        ports:
-          - 3307:3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-
     steps:
-    - uses: actions/checkout@v2
+    - name: checkout repository
+      uses: actions/checkout@v2
