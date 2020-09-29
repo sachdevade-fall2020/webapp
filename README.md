@@ -1,5 +1,3 @@
-![PR Check](https://github.com/sachdevade-fall2020/webapp/workflows/Pull%20Request%20Check%20Workflow/badge.svg)
-
 # CSYE6225 Web Application
 
 Web application built using [Laravel](https://laravel.com/) for Network Structures and Cloud Computing (CSYE6225) course in Fall 2020.
