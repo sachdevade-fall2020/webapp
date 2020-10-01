@@ -16,6 +16,6 @@ class AuthenticateOnceWithBasicAuth
      */
     public function handle($request, Closure $next)
     {
-        return Auth::onceBasic('email_address') ?: $next($request);
+        return Auth::onceBasic('username') ?: $next($request);
     }
 }

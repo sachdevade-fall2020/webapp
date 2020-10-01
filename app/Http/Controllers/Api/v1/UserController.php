@@ -17,7 +17,7 @@ class UserController extends Controller
         $inputs = request()->only([
             'first_name',
             'last_name',
-            'email_address',
+            'username',
             'password'
         ]);
 
@@ -27,7 +27,7 @@ class UserController extends Controller
             'id'              => $user->id,
             'first_name'      => $user->first_name,
             'last_name'       => $user->last_name,
-            'email_address'   => $user->email_address,
+            'username'        => $user->username,
             'account_created' => $user->account_created,
             'account_updated' => $user->account_updated,
         ], 201);
@@ -40,7 +40,7 @@ class UserController extends Controller
             'id'              => $user->id,
             'first_name'      => $user->first_name,
             'last_name'       => $user->last_name,
-            'email_address'   => $user->email_address,
+            'username'        => $user->username,
             'account_created' => $user->account_created,
             'account_updated' => $user->account_updated,
         ]);
