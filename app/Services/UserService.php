@@ -23,7 +23,7 @@ class UserService
 		$user = $this->users->create([
 			'first_name'    => \Arr::get($inputs, 'first_name'),
             'last_name'     => \Arr::get($inputs, 'last_name'),
-            'email_address' => \Arr::get($inputs, 'email_address'),
+            'username'      => \Arr::get($inputs, 'username'),
 			'password'      => \Arr::get($inputs, 'password'),
         ]);
         

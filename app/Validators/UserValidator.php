@@ -20,18 +20,18 @@ class UserValidator extends Validator
         {
             case 'create':
                 $rules = [
-                    'first_name'    => 'required|max:255',
-                    'last_name'     => 'required|max:255',
-                    'email_address' => 'required|email|max:255|unique:users',
-                    'password'      => 'required|min:9|max:255|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@!$&%#*?+]).+$/',
+                    'first_name' => 'required|max:255',
+                    'last_name'  => 'required|max:255',
+                    'username'   => 'required|email|max:255|unique:users',
+                    'password'   => 'required|min:9|max:255|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@!$&%#*?+]).+$/',
                 ]; 
             break;
 
             case 'update':
                 $rules = [
-                    'first_name'    => 'required|max:255',
-                    'last_name'     => 'required|max:255',
-                    'password'      => 'required|min:9|max:255|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@!$&%#*?+]).+$/',
+                    'first_name' => 'required|max:255',
+                    'last_name'  => 'required|max:255',
+                    'password'   => 'required|min:9|max:255|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@!$&%#*?+]).+$/',
                 ]; 
             break;
         }
@@ -47,15 +47,15 @@ class UserValidator extends Validator
         {
             case 'create':
                 $messages = [
-                    'email_address.unique' => 'user already exists with given :attribute',
-                    'password.regex'       => ':attribute should have at least 1 lowercase, 1 uppercase, 1 number and 1 special character',
+                    'username.unique' => 'user already exists with given :attribute',
+                    'password.regex'  => ':attribute should have at least 1 lowercase, 1 uppercase, 1 number and 1 special character',
                 ]; 
             break;
 
             case 'update':
                 $messages = [
-                    'email_address.unique' => 'user already exists with given :attribute',
-                    'password.regex'       => ':attribute should have at least 1 lowercase, 1 uppercase, 1 number and 1 special character',
+                    'username.unique' => 'user already exists with given :attribute',
+                    'password.regex'  => ':attribute should have at least 1 lowercase, 1 uppercase, 1 number and 1 special character',
                 ]; 
             break;
         }
