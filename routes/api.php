@@ -20,4 +20,6 @@ Route::group(['prefix' =>'user'], function() {
         Route::get('self', 'UserController@getSelf')->name('user.get');
         Route::put('self', 'UserController@updateSelf')->name('user.update');
     });
+
+    Route::get('{id}', 'UserController@getUser')->name('user.details');
 });

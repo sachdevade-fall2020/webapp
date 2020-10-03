@@ -60,4 +60,17 @@ class UserController extends Controller
 
         return response()->json('', 204);
     }
+
+    public function getUser($user_id) {
+        $user = app()->call([$this->user_service, 'get'], ['user_id' => $user_id]);
+
+        return response()->json([
+            'id'              => $user->id,
+            'first_name'      => $user->first_name,
+            'last_name'       => $user->last_name,
+            'username'        => $user->username,
+            'account_created' => $user->account_created,
+            'account_updated' => $user->account_updated,
+        ]);
+    }
 }

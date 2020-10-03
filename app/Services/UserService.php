@@ -40,4 +40,9 @@ class UserService
 
         $this->users->update($id, \Arr::only($inputs, ['first_name', 'last_name', 'password']));
     }
+
+    public function get($user_id)
+    {
+        return $this->users->get($user_id);
+    } 
 }
