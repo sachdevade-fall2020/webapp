@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Services\QuestionService;
 use App\Http\Controllers\Controller;
+use App\Transformers\QuestionTransformer;
 
 class QuestionController extends Controller
 {
@@ -23,27 +24,13 @@ class QuestionController extends Controller
             'inputs'  => $inputs
         ]);
 
-        return response()->json([
-            'question_id'       => $question->id,
-            'user_id'           => $question->user_id,
-            'question_text'     => $question->question_text,
-            'created_timestamp' => $question->created_timestamp,
-            'updated_timestamp' => $question->updated_timestamp,
-            'answers'           => $question->answers
-        ], 201);
+        return response()->json($this->getTransformedData($question, new QuestionTransformer), 201);
     }
 
     public function getQuestion($question_id) {
         $question = app()->call([$this->question_service, 'get'], ['question_id' => $question_id]);
 
-        return response()->json([
-            'question_id'       => $question->id,
-            'user_id'           => $question->user_id,
-            'question_text'     => $question->question_text,
-            'created_timestamp' => $question->created_timestamp,
-            'updated_timestamp' => $question->updated_timestamp,
-            'answers'           => $question->answers
-        ]);
+        return response()->json($this->getTransformedData($question, new QuestionTransformer));
     }
 
     public function update($question_id) {
