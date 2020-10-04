@@ -33,6 +33,12 @@ class QuestionController extends Controller
         return response()->json($this->getTransformedData($question, new QuestionTransformer));
     }
 
+    public function getAllQuestions() {
+        $questions = app()->call([$this->question_service, 'getAll']);
+
+        return response()->json($this->getTransformedCollectionData($questions, new QuestionTransformer));
+    }
+
     public function update($question_id) {
         $inputs = request()->only([
             'question_text',

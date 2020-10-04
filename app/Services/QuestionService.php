@@ -33,6 +33,11 @@ class QuestionService
     {
         return $this->questions->get($question_id);
     }
+
+    public function getAll()
+    {
+        return $this->questions->all();
+    }
     
     public function update($user_id, $question_id, $inputs, QuestionValidator $validator) 
     {

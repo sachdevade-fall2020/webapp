@@ -24,8 +24,10 @@ Route::group(['prefix' =>'user'], function() {
     Route::get('{id}', 'UserController@getUser')->name('user.details');
 });
 
+Route::get('questions', 'QuestionController@getAllQuestions')->name('question.all');
+
 Route::group(['prefix' =>'question'], function() {
-    Route::get('{id}', 'QuestionController@getQuestion')->name('user.get');
+    Route::get('{id}', 'QuestionController@getQuestion')->name('question.get');
 
     Route::group(['middleware' => 'auth.basic.once'], function() {
         Route::post('', 'QuestionController@create')->name('question.create');
