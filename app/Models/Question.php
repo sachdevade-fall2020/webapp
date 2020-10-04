@@ -14,6 +14,15 @@ class Question extends Model
     public $incrementing = false;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'question_text',
+    ];
+
+    /**
      * Custom timestamps
      * 
      */

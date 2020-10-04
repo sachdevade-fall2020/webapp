@@ -23,3 +23,13 @@ Route::group(['prefix' =>'user'], function() {
 
     Route::get('{id}', 'UserController@getUser')->name('user.details');
 });
+
+Route::group(['prefix' =>'question'], function() {
+    Route::get('{id}', 'QuestionController@getQuestion')->name('user.get');
+
+    Route::group(['middleware' => 'auth.basic.once'], function() {
+        Route::post('', 'QuestionController@create')->name('question.create');
+        Route::put('{id}', 'QuestionController@update')->name('question.update');
+        Route::delete('{id}', 'QuestionController@delete')->name('question.delete');
+    });
+});
