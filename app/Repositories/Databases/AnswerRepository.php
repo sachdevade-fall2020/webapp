@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Databases;
 
-use App\Models\Question;
+use App\Models\Answer;
 use App\Traits\DatabaseRepositoryTrait;
 use App\Repositories\Contracts\AnswerRepository as AnswerRepositoryContract;
 

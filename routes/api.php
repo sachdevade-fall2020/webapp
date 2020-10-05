@@ -35,3 +35,13 @@ Route::group(['prefix' =>'question'], function() {
         Route::delete('{id}', 'QuestionController@delete')->name('question.delete');
     });
 });
+
+Route::group(['prefix' =>'question/{question_id}'], function() {
+    Route::get('answer/{id}', 'AnswerController@get')->name('answer.get');
+
+    Route::group(['middleware' => 'auth.basic.once'], function() {
+        Route::post('answer', 'AnswerController@create')->name('answer.create');
+        Route::put('answer/{id}', 'AnswerController@update')->name('answer.create');
+        Route::delete('answer/{id}', 'AnswerController@delete')->name('question.delete');
+    });
+});
