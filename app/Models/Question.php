@@ -53,4 +53,12 @@ class Question extends Model
     {
         return $this->hasMany(Answer::class, 'question_id');
     }
+
+    /**
+     * Get the categories of the question.
+     */
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
 }

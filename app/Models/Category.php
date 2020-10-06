@@ -20,6 +20,15 @@ class Category extends Model
      */
     public $timestamps = false;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'category'
+    ];
+
     public static function boot()
     {
         parent::boot();
@@ -27,5 +36,13 @@ class Category extends Model
         self::creating(function ($model) {
             $model->id = (string) \Str::uuid();
         });
+    }
+
+    /**
+     * Get the categories of the question.
+     */
+    public function questions()
+    {
+        return $this->belongsToMany(Question::class);
     }
 }

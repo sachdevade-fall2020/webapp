@@ -17,6 +17,7 @@ class QuestionController extends Controller
     public function create() {
         $inputs = request()->only([
             'question_text',
+            'categories',
         ]);
 
         $question = app()->call([$this->question_service, 'create'], [
@@ -42,6 +43,7 @@ class QuestionController extends Controller
     public function update($question_id) {
         $inputs = request()->only([
             'question_text',
+            'categories',
         ]);
 
         app()->call([$this->question_service, 'update'], [

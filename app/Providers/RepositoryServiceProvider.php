@@ -40,5 +40,11 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\Contracts\AnswerRepository::class,
             \App\Repositories\Databases\AnswerRepository::class
         );
+
+        //Category
+        $this->app->bind(
+            \App\Repositories\Contracts\CategoryRepository::class,
+            \App\Repositories\Databases\CategoryRepository::class
+        );
     }
 }

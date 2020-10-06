@@ -21,12 +21,16 @@ class QuestionValidator extends Validator
             case 'create':
                 $rules = [
                     'question_text' => 'required|max:255',
+                    'categories'    => 'array',
+                    'categories.*'  => 'distinct',
                 ]; 
             break;
 
             case 'update':
                 $rules = [
                     'question_text' => 'required|max:255',
+                    'categories'    => 'array',
+                    'categories.*'  => 'distinct',
                 ]; 
             break;
         }

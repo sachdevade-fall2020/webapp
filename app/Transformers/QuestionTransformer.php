@@ -29,7 +29,7 @@ class QuestionTransformer extends Transformer
     * @var array
     */
     protected $defaultIncludes = [
-        'answers'
+        'answers', 'categories'
     ];
 
     /**
@@ -51,5 +51,10 @@ class QuestionTransformer extends Transformer
     public function includeAnswers(Question $question)
     {
         return $this->collection($question->answers, new AnswerTransformer);
+    }
+
+    public function includeCategories(Question $question)
+    {
+        return $this->collection($question->categories, new CategoryTransformer);
     }
 }
