@@ -77,8 +77,9 @@ class QuestionService
         if($category_names != null && count($category_names) > 0){
             foreach($category_names as $category_name){
                 $category = $this->categories->firstOrCreate(['category' => strtolower($category_name)]);
-    
-                $this->questions->attach($question, 'categories', $category->id);
+
+                if(!$this->questions->checkCategoryAttached($question, $category))
+                    $this->questions->attach($question, 'categories', $category->id);
             }
         }
     }
