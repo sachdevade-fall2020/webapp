@@ -28,6 +28,11 @@ class QuestionObserver
         $files = $question->files;
 
         if($files->count() > 0){
+            //db
+            foreach ($files as $file) {
+                $file->delete();
+            }
+            //s3
             Storage::deleteDirectory("questions/".$question->id);
             Log::info($files->count()." files deleted");
         }else{
