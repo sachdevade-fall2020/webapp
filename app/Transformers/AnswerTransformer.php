@@ -28,7 +28,9 @@ class AnswerTransformer extends Transformer
     *
     * @var array
     */
-    protected $defaultIncludes = [];
+    protected $defaultIncludes = [
+        'attachments'
+    ];
 
     /**
     * Turn this item object into a generic array
@@ -45,5 +47,10 @@ class AnswerTransformer extends Transformer
             'created_timestamp' => data_get($answer, 'created_timestamp'),
             'updated_timestamp' => data_get($answer, 'updated_timestamp'),
         ];
+    }
+
+    public function includeAttachments(Answer $answer)
+    {
+        return $this->collection($answer->attachments, new FileTransformer);
     }
 }

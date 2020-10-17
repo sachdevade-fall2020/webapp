@@ -3,6 +3,8 @@
 namespace App\Observers;
 
 use Log;
+use Storage;
+use Exception;
 use App\Models\Question;
 
 class QuestionObserver
@@ -20,5 +22,16 @@ class QuestionObserver
         $question->categories()->sync([]);
 
         Log::info('Categories removed');
+
+        Log::info('Deleting files for question id '.$question->id);
+
+        $files = $question->files;
+
+        if($files->count() > 0){
+            Storage::deleteDirectory("questions/".$question->id);
+            Log::info($files->count()." files deleted");
+        }else{
+            Log::info('No files found');
+        }
     }
 }

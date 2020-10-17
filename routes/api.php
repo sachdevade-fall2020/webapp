@@ -33,6 +33,9 @@ Route::group(['prefix' =>'question'], function() {
         Route::post('', 'QuestionController@create')->name('question.create');
         Route::put('{id}', 'QuestionController@update')->name('question.update');
         Route::delete('{id}', 'QuestionController@delete')->name('question.delete');
+
+        Route::post('{question_id}/file', 'FileController@createQuestionFile')->name('question.file.create');
+        Route::delete('{question_id}/file/{file_id}', 'FileController@delete')->name('question.file.delete');
     });
 });
 
