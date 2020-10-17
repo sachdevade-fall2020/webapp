@@ -51,6 +51,6 @@ class AnswerTransformer extends Transformer
 
     public function includeAttachments(Answer $answer)
     {
-        return $this->collection($answer->attachments, new FileTransformer);
+        return $this->collection($answer->files, new FileTransformer);
     }
 }

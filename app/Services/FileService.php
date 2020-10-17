@@ -27,11 +27,11 @@ class FileService
         $this->answers = $answers;
     }
 
-    public function create($user_id, $fileable_id, $inputs, FileValidator $validator) 
+    public function create($user_id, $fileable_id, $type, $inputs, FileValidator $validator) 
     {
         $validator->fire($inputs, 'create');
 
-        $fileable = $this->questions->getWhere('id', $fileable_id, ['user_id' => $user_id])->first();
+        $fileable = $this->getUserFileableForFile($fileable_id, $type, $user_id);
 
         $req_file = Arr::get($inputs, 'attachment');
 
@@ -62,6 +62,21 @@ class FileService
         }
     }
 
+    private function getUserFileableForFile($fileable_id, $type, $user_id)
+    {
+        switch ($type) {
+            case 'question':
+                return $this->questions->getWhere('id', $fileable_id, ['user_id' => $user_id])->first();
+            
+            case 'answer':
+                return $this->answers->getWhere('id', $fileable_id, ['user_id' => $user_id])->first();
+            
+            default:
+                throw new BadRequestException('Invalid File Type');    
+        }
+        
+    }
+
     private function generateUploadPath($file)
     {
         return $file->fileable_type."/".$file->fileable_id."/files/".$file->id;
@@ -81,7 +96,7 @@ class FileService
     {
         $file = $this->get($file_id, $fileable_id, $user_id);
 
-        throw_if($file->fileable->user_id != $user_id, BadRequestException::class, 'Unable to delete question');
+        throw_if($file->fileable->user_id != $user_id, BadRequestException::class, 'Unable to delete file');
 
         try {
             Storage::deleteDirectory($this->generateUploadPath($file));

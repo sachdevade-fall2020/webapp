@@ -57,7 +57,7 @@ class Answer extends Model
     /**
      * Get the attachments of the answer.
      */
-    public function attachments()
+    public function files()
     {
         return $this->morphMany(File::class, 'fileable');
     }
