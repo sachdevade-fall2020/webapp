@@ -53,4 +53,12 @@ class Answer extends Model
     {
         return $this->belongsTo(Question::class, 'user_id');
     }
+
+    /**
+     * Get the attachments of the answer.
+     */
+    public function files()
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
 }

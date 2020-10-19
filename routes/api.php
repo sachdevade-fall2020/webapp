@@ -33,6 +33,9 @@ Route::group(['prefix' =>'question'], function() {
         Route::post('', 'QuestionController@create')->name('question.create');
         Route::put('{id}', 'QuestionController@update')->name('question.update');
         Route::delete('{id}', 'QuestionController@delete')->name('question.delete');
+
+        Route::post('{question_id}/file', 'FileController@createQuestionFile')->name('question.file.create');
+        Route::delete('{question_id}/file/{file_id}', 'FileController@deleteQuestionFile')->name('question.file.delete');
     });
 });
 
@@ -42,6 +45,9 @@ Route::group(['prefix' =>'question/{question_id}'], function() {
     Route::group(['middleware' => 'auth.basic.once'], function() {
         Route::post('answer', 'AnswerController@create')->name('answer.create');
         Route::put('answer/{id}', 'AnswerController@update')->name('answer.create');
-        Route::delete('answer/{id}', 'AnswerController@delete')->name('question.delete');
+        Route::delete('answer/{id}', 'AnswerController@delete')->name('answer.delete');
+
+        Route::post('answer/{answer_id}/file', 'FileController@createAnswerFile')->name('answer.file.create');
+        Route::delete('answer/{answer_id}/file/{file_id}', 'FileController@deleteAnswerFile')->name('answer.file.delete');
     });
 });

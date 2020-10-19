@@ -61,4 +61,12 @@ class Question extends Model
     {
         return $this->belongsToMany(Category::class);
     }
+
+    /**
+     * Get the attachments of the question.
+     */
+    public function files()
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
 }
