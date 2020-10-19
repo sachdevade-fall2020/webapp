@@ -29,10 +29,9 @@ class FileController extends Controller
             'attachment'
         ]);
 
-        $file = app()->call([$this->file_service, 'create'], [
+        $file = app()->call([$this->file_service, 'createQuestionFile'], [
             'user_id'     => auth()->user()->id,
-            'fileable_id' => $question_id,
-            'type'        => 'question',
+            'question_id' => $question_id,
             'inputs'      => $inputs
         ]);
 
@@ -49,10 +48,10 @@ class FileController extends Controller
             'attachment'
         ]);
 
-        $file = app()->call([$this->file_service, 'create'], [
+        $file = app()->call([$this->file_service, 'createAnswerFile'], [
             'user_id'     => auth()->user()->id,
-            'fileable_id' => $answer_id,
-            'type'        => 'answer',
+            'question_id' => $question_id,
+            'answer_id'   => $answer_id,
             'inputs'      => $inputs
         ]);
 
@@ -63,11 +62,11 @@ class FileController extends Controller
      * Handle request to delete file for a question.
      * 
      */
-    public function deleteQuestionFile($fileable_id, $file_id)
+    public function deleteQuestionFile($question_id, $file_id)
     {
-        $file = app()->call([$this->file_service, 'delete'], [
+        $file = app()->call([$this->file_service, 'deleteQuestionFile'], [
             'user_id'     => auth()->user()->id,
-            'fileable_id' => $fileable_id,
+            'question_id' => $question_id,
             'file_id'     => $file_id
         ]);
 
@@ -78,11 +77,12 @@ class FileController extends Controller
      * Handle request to answer file for a question.
      * 
      */
-    public function deleteAnswerFile($question_id, $fileable_id, $file_id)
+    public function deleteAnswerFile($question_id, $answer_id, $file_id)
     {
-        $file = app()->call([$this->file_service, 'delete'], [
+        $file = app()->call([$this->file_service, 'deleteAnswerFile'], [
             'user_id'     => auth()->user()->id,
-            'fileable_id' => $fileable_id,
+            'question_id' => $question_id,
+            'answer_id'   => $answer_id,
             'file_id'     => $file_id
         ]);
 

@@ -27,14 +27,32 @@ class FileService
         $this->answers = $answers;
     }
 
-    public function create($user_id, $fileable_id, $type, $inputs, FileValidator $validator) 
+    public function createQuestionFile($user_id, $question_id, $inputs, FileValidator $validator)
     {
         $validator->fire($inputs, 'create');
 
-        $fileable = $this->getUserFileableForFile($fileable_id, $type, $user_id);
+        $question = $this->questions->get($question_id);
 
-        $req_file = Arr::get($inputs, 'attachment');
+        throw_if($question->user_id != $user_id, BadRequestException::class, 'Unable to add file');
 
+        return $this->createAndUploadFile(Arr::get($inputs, 'attachment'), $question);
+    }
+
+    public function createAnswerFile($user_id, $question_id, $answer_id, $inputs, FileValidator $validator)
+    {
+        $validator->fire($inputs, 'create');
+        
+        $question = $this->questions->get($question_id);
+
+        $answer = $this->answers->getWhere('id', $answer_id, ['question_id' => $question->id])->first();
+
+        throw_if($answer->user_id != $user_id, BadRequestException::class, 'Unable to add file');
+
+        return $this->createAndUploadFile(Arr::get($inputs, 'attachment'), $answer);
+    }
+
+    private function createAndUploadFile($req_file, $fileable)
+    {
         DB::beginTransaction();
 
         try {
@@ -62,21 +80,6 @@ class FileService
         }
     }
 
-    private function getUserFileableForFile($fileable_id, $type, $user_id)
-    {
-        switch ($type) {
-            case 'question':
-                return $this->questions->getWhere('id', $fileable_id, ['user_id' => $user_id])->first();
-            
-            case 'answer':
-                return $this->answers->getWhere('id', $fileable_id, ['user_id' => $user_id])->first();
-            
-            default:
-                throw new BadRequestException('Invalid File Type');    
-        }
-        
-    }
-
     private function generateUploadPath($file)
     {
         return $file->fileable_type."/".$file->fileable_id."/files/".$file->id;
@@ -87,17 +90,38 @@ class FileService
         return Storage::putFile($this->generateUploadPath($file), $req_file);
     }
 
-    public function get($file_id, $fileable_id)
+    public function deleteQuestionFile($user_id, $question_id, $file_id)
     {
-        return $this->files->getWhere('id', $file_id, ['fileable_id' => $fileable_id])->first();
+        $question = $this->questions->get($question_id);
+
+        throw_if($question->user_id != $user_id, BadRequestException::class, 'Unable to delete file');
+
+        $file = $this->files->getWhere('id', $file_id, [
+            'fileable_type' => 'questions',
+            'fileable_id' => $question->id
+        ])->first();
+
+        $this->deleteAndRemoveFile($file);
     }
 
-    public function delete($user_id, $file_id, $fileable_id) 
+    public function deleteAnswerFile($user_id, $question_id, $answer_id, $file_id)
     {
-        $file = $this->get($file_id, $fileable_id, $user_id);
+        $question = $this->questions->get($question_id);
 
-        throw_if($file->fileable->user_id != $user_id, BadRequestException::class, 'Unable to delete file');
+        $answer = $this->answers->getWhere('id', $answer_id, ['question_id' => $question->id])->first();
 
+        throw_if($answer->user_id != $user_id, BadRequestException::class, 'Unable to delete file');
+
+        $file = $this->files->getWhere('id', $file_id, [
+            'fileable_type' => 'answers',
+            'fileable_id' => $answer->id
+        ])->first();
+
+        $this->deleteAndRemoveFile($file);
+    }
+
+    private function deleteAndRemoveFile($file)
+    {
         try {
             Storage::deleteDirectory($this->generateUploadPath($file));
             $this->files->delete($file);
