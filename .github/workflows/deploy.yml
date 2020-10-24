@@ -5,7 +5,7 @@ on:
     branches: [ a6 ]
 
 jobs:
-  pr-check:
+  deploy:
 
     # specify runner
     runs-on: ubuntu-latest
