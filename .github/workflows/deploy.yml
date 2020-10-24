@@ -102,7 +102,7 @@ jobs:
         --exclude='*.git*' \
         --exclude='vendor/' \
         --exclude='storage/logs/*' \
-        -zvcf ${GITHUB_ACTOR}-build-${GITHUB_RUN_NUMBER}.tar.gz -T bundle.config
+        -zvcf webapp-build-${GITHUB_RUN_NUMBER}.tar.gz -T bundle.config
     
       #configure aws credentials
     - name: Configure AWS credentials
@@ -116,4 +116,4 @@ jobs:
     - name: Upload build to codedeploy S3 bucket
       env:
         BUCKET_NAME: ${{ secrets.CODEDEPLOY_BUCKET }}
-      run: aws s3 cp ${GITHUB_ACTOR}-build-${GITHUB_RUN_NUMBER}.tar.gz s3://${BUCKET_NAME}
+      run: aws s3 cp webapp-build-${GITHUB_RUN_NUMBER}.tar.gz s3://${BUCKET_NAME}
