@@ -2,7 +2,7 @@ name: Deploy Workflow
 
 on:
   push:
-    branches: [ a7 ]
+    branches: [ a6 ]
 
 jobs:
   pr-check:
