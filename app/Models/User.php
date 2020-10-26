@@ -79,4 +79,20 @@ class User extends Authenticatable
     {
         return [];
     }
+
+    /**
+     * Get the questions of the user.
+     */
+    public function questions()
+    {
+        return $this->hasMany(Question::class, 'user_id');
+    }
+
+    /**
+     * Get the answers of the user.
+     */
+    public function answers()
+    {
+        return $this->hasMany(Answer::class, 'user_id');
+    }
 }

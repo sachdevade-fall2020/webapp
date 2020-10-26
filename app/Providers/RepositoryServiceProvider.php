@@ -28,6 +28,29 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\Contracts\UserRepository::class,
             \App\Repositories\Databases\UserRepository::class
         );
-        
+
+        //Question
+        $this->app->bind(
+            \App\Repositories\Contracts\QuestionRepository::class,
+            \App\Repositories\Databases\QuestionRepository::class
+        );
+
+        //Answer
+        $this->app->bind(
+            \App\Repositories\Contracts\AnswerRepository::class,
+            \App\Repositories\Databases\AnswerRepository::class
+        );
+
+        //Category
+        $this->app->bind(
+            \App\Repositories\Contracts\CategoryRepository::class,
+            \App\Repositories\Databases\CategoryRepository::class
+        );
+
+        //File
+        $this->app->bind(
+            \App\Repositories\Contracts\FileRepository::class,
+            \App\Repositories\Databases\FileRepository::class
+        );
     }
 }
