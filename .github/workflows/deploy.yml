@@ -123,6 +123,7 @@ jobs:
       env:
         BUCKET_NAME: ${{ secrets.CODEDEPLOY_BUCKET }}
         CODEDEPLOY_APPLICATION: ${{ secrets.CODEDEPLOY_APPLICATION }}
+        CODEDEPLOY_DEPLOYMENT_GROUP: ${{ secrets.CODEDEPLOY_DEPLOYMENT_GROUP }}
       run: |
         aws deploy create-deployment \
         --application-name ${CODEDEPLOY_APPLICATION} \
