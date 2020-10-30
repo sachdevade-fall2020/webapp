@@ -13,14 +13,13 @@ echo "env file copied"
 
 # Install composer dependencies
 echo "Installing composer dependencies..."
-/usr/local/bin/composer install -d /var/www/html
+/usr/bin/composer install -d /var/www/html/
 echo "exit code: $?"
 echo "Composer dependencies installed"
 
 # Clear any previous cached views and optimize the application
 echo "executing artisan commands..."
 php /var/www/html/artisan key:generate
-php /var/www/html/artisan cache:clear
 php /var/www/html/artisan view:clear
 php /var/www/html/artisan config:cache
 php /var/www/html/artisan migrate
