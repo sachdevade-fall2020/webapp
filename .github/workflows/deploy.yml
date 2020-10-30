@@ -2,7 +2,7 @@ name: Deploy Workflow
 
 on:
   push:
-    branches: [ a6 ]
+    branches: [ master ]
 
 jobs:
   deploy:
