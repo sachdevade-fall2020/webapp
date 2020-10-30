@@ -117,3 +117,17 @@ jobs:
       env:
         BUCKET_NAME: ${{ secrets.CODEDEPLOY_BUCKET }}
       run: aws s3 cp webapp-build-${GITHUB_RUN_NUMBER}.tar.gz s3://${BUCKET_NAME}
+
+      # codedeploy api call
+    - name: CodeDeploy API call
+      env:
+        BUCKET_NAME: ${{ secrets.CODEDEPLOY_BUCKET }}
+        CODEDEPLOY_APPLICATION: ${{ secrets.CODEDEPLOY_APPLICATION }}
+      run: |
+        aws deploy create-deployment \
+        --application-name ${CODEDEPLOY_APPLICATION} \
+        --deployment-config-name CodeDeployDefault.AllAtOnce \
+        --deployment-group-name ${CODEDEPLOY_DEPLOYMENT_GROUP} \
+        --s3-location bucket=${BUCKET_NAME},key=webapp-build-${GITHUB_RUN_NUMBER}.tar.gz,bundleType=tgz \
+        --region ${AWS_REGION} \
+        --output json
