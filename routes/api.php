@@ -51,3 +51,10 @@ Route::group(['prefix' =>'question/{question_id}'], function() {
         Route::delete('answer/{answer_id}/file/{file_id}', 'FileController@deleteAnswerFile')->name('answer.file.delete');
     });
 });
+
+// codedeploy test api
+Route::get('test', function () {
+    return response()->json([
+        'message' => 'Hello World!'
+    ]);
+});
