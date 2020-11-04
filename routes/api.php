@@ -55,6 +55,6 @@ Route::group(['prefix' =>'question/{question_id}'], function() {
 // codedeploy test api
 Route::get('test', function () {
     return response()->json([
-        'message' => 'Hello World!'
+        'message' => 'TESTING: Hello World!'
     ]);
 });
