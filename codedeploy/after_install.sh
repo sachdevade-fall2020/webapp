@@ -37,3 +37,9 @@ echo "exit code: $?"
 sudo chmod -R ug+rwx /var/www/html/storage /var/www/html/bootstrap/cache
 echo "exit code: $?"
 echo "permissions fixed"
+
+sudo cp /var/www/html/cloudwatch/config.json /opt/aws/amazon-cloudwatch-agent/
+echo "exit code: $?"
+
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/config.json -s
+echo "exit code: $?"
