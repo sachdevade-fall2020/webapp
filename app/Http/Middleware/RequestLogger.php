@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Log;
+use Statsd;
 use Closure;
 
 class RequestLogger
@@ -16,6 +17,8 @@ class RequestLogger
      */
     public function handle($request, Closure $next)
     {
+        Statsd::increment('requests.counter');
+
         return $next($request);
     }
 
