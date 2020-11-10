@@ -19,7 +19,11 @@ class RequestLogger
     {
         Statsd::increment('requests');
 
-        return $next($request);
+        $timer = Statsd::startTiming("request_execution");
+        $response =  $next($request);
+        $timer->endTiming("request_execution");
+
+        return $response;
     }
 
     public function terminate($request, $response)
