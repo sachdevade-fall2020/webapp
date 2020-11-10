@@ -17,7 +17,7 @@ class RequestLogger
      */
     public function handle($request, Closure $next)
     {
-        Statsd::increment('requests.counter');
+        Statsd::increment('requests');
 
         return $next($request);
     }
