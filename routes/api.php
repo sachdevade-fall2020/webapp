@@ -53,8 +53,4 @@ Route::group(['prefix' =>'question/{question_id}'], function() {
 });
 
 // codedeploy test api
-Route::get('test', function () {
-    return response()->json([
-        'message' => 'DEMO6: Hello World!'
-    ]);
-});
+Route::get('test', 'TestController@test')->name('test');
