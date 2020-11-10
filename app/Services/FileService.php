@@ -5,6 +5,7 @@ namespace App\Services;
 use DB;
 use Arr;
 use File;
+use Statsd;
 use Storage;
 use Exception;
 use Carbon\Carbon;
@@ -87,7 +88,11 @@ class FileService
 
     private function uploadFile($file, $req_file)
     {
-        return Storage::putFile($this->generateUploadPath($file), $req_file);
+        $timer = Statsd::startTiming("s3_execution");
+        $object_name = Storage::putFile($this->generateUploadPath($file), $req_file);
+        $timer->endTiming("s3_execution");
+
+        return $object_name;
     }
 
     public function deleteQuestionFile($user_id, $question_id, $file_id)

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use DB;
+use Statsd;
 use App\Models\Answer;
 use App\Models\Question;
 use App\Observers\AnswerObserver;
@@ -35,5 +37,9 @@ class AppServiceProvider extends ServiceProvider
             'questions' => Question::class,
             'answers'   => Answer::class,
         ]);
+
+        DB::listen(function ($query) {
+            Statsd::timing('db_execution', $query->time);
+        });
     }
 }
