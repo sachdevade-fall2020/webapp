@@ -17,10 +17,10 @@ class RequestLogger
      */
     public function handle($request, Closure $next)
     {
-        $method = strtolower($request->method());
-        $route_name = str_replace("/", "_", $request->path());
+        $method = $request->method();
+        $route_name = str_replace(".", "_", $request->route()->getName());
 
-        Statsd::increment("requests_${method}_${route_name}");
+        Statsd::increment("${method}_${route_name}_requests");
 
         $timer = Statsd::startTiming("request_execution");
         $response =  $next($request);
@@ -31,7 +31,7 @@ class RequestLogger
 
     public function terminate($request, $response)
     {
-        Statsd::increment("response_".$response->status());
+        Statsd::increment($response->status()."_responses");
 
         Log::info($request->method()." ".$request->path()." ".$response->status());
     }
