@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "162637e75d599ba1806c98633914b566",
+    "content-hash": "ba25dd970c09bea7cd4d85171598e0ab",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.158.8",
+            "version": "3.163.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "6f68f8f3b459166e96e2ba46cd720668f14255e2"
+                "reference": "ef46d2daf80f2a21809608ada7ba76dddfd103cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6f68f8f3b459166e96e2ba46cd720668f14255e2",
-                "reference": "6f68f8f3b459166e96e2ba46cd720668f14255e2",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ef46d2daf80f2a21809608ada7ba76dddfd103cd",
+                "reference": "ef46d2daf80f2a21809608ada7ba76dddfd103cd",
                 "shasum": ""
             },
             "require": {
@@ -89,7 +89,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2020-10-16T18:15:17+00:00"
+            "time": "2020-11-20T19:13:16+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
