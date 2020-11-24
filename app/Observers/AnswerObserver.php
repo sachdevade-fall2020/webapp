@@ -19,13 +19,8 @@ class AnswerObserver
      */
     public function created(Answer $answer)
     {
-        $notifier = app(SendNotification::class);
-
         $subject = config('settings.sns.subjects.ANSWER_CREATE');
-
-        Log::info('Sending SNS notification with '.$subject.' subject');
-        $notifier->handle(config('settings.sns.subjects.ANSWER_CREATE'));
-        Log::info('SNS notified successfully');
+        app(SendNotification::class)->handle($subject, $this->getNotificationData($answer));
     }
 
     /**
@@ -51,13 +46,52 @@ class AnswerObserver
         }else{
             Log::info('No files found');
         }
+    }
 
-        $notifier = app(SendNotification::class);
+    /**
+     * Handle the answer "updated" event.
+     *
+     * @param  \App\Models\Answer $answer
+     * @return void
+     */
+    public function updated(Answer $answer)
+    {
+        $subject = config('settings.sns.subjects.ANSWER_UPDATE');
+        app(SendNotification::class)->handle($subject, $this->getNotificationData($answer));
+    }
 
+    /**
+     * Handle the answer "deleted" event.
+     *
+     * @param  \App\Models\Answer $answer
+     * @return void
+     */
+    public function deleted(Answer $answer)
+    {
         $subject = config('settings.sns.subjects.ANSWER_DELETE');
+        app(SendNotification::class)->handle($subject, $this->getNotificationData($answer));
+    }
 
-        Log::info('Sending SNS notification with '.$subject.' subject');
-        $notifier->handle($subject);
-        Log::info('Sending SNS notification with '.$subject.' subject');
+    /**
+     * Generate data for notification
+     * 
+     * @param  \App\Models\Answer $answer
+     * @return array
+     */
+    private function getNotificationData(Answer $answer)
+    {
+        $question = data_get($answer, 'question');
+
+        $data = [
+            'question_id'         => data_get($question, 'id'),
+            'question_user_email' => data_get($question, 'user.username'),
+            'question_url'        => route('question.get', ['id' => data_get($question, 'id')]),
+            'answer_id'           => data_get($answer, 'id'),
+            'answer_user_email'   => data_get($answer, 'user.username'),
+            'answer_text'         => data_get($answer, 'answer_text'),
+            'answer_url'          => route('answer.get', ['question_id' => data_get($question, 'id'), 'id' => data_get($answer, 'id')]),
+        ];
+
+        return $data;
     }
 }
