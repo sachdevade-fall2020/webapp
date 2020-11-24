@@ -7,8 +7,27 @@ use Storage;
 use Exception;
 use App\Models\Answer;
 
+use App\Tasks\SendNotification;
+
 class AnswerObserver
 {
+    /**
+     * Handle the answer "created" event.
+     *
+     * @param  \App\Models\Answer $answer
+     * @return void
+     */
+    public function created(Answer $answer)
+    {
+        $notifier = app(SendNotification::class);
+
+        $subject = config('settings.sns.subjects.ANSWER_CREATE');
+
+        Log::info('Sending SNS notification with '.$subject.' subject');
+        $notifier->handle(config('settings.sns.subjects.ANSWER_CREATE'));
+        Log::info('SNS notified successfully');
+    }
+
     /**
      * Handle the answer "deleting" event.
      *
@@ -32,5 +51,13 @@ class AnswerObserver
         }else{
             Log::info('No files found');
         }
+
+        $notifier = app(SendNotification::class);
+
+        $subject = config('settings.sns.subjects.ANSWER_DELETE');
+
+        Log::info('Sending SNS notification with '.$subject.' subject');
+        $notifier->handle($subject);
+        Log::info('Sending SNS notification with '.$subject.' subject');
     }
 }
