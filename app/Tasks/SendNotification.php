@@ -2,6 +2,8 @@
 
 namespace App\Tasks;
 
+use Log;
+use Exception;
 use Aws\Sns\SnsClient;
 
 class SendNotification
@@ -16,14 +18,24 @@ class SendNotification
         ]);
     }
 
-    public function handle($subject)
+    public function handle($subject, $data)
     {
-        $this->client->publish([
-            'TopicArn' => config('settings.sns.arn'),
-            'Message' => json_encode([
-                'message' => 'Testing SNS',
-            ]),
-            'Subject' => $subject
-        ]);
+        Log::info("Sending SNS notification with $subject subject");
+
+        Log::info("Notification Data:");
+        Log::info($data);
+
+        try{
+            $this->client->publish([
+                'TopicArn' => config('settings.sns.arn'),
+                'Subject'  => $subject,
+                'Message'  => json_encode($data),
+            ]);
+
+            Log::info('SNS notified successfully');
+        }catch(Exception $e){
+            Log::error('SNS notification failed');
+            Log::error($e->getMessage());
+        } 
     }
 }
