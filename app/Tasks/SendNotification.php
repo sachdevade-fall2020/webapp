@@ -33,8 +33,11 @@ class SendNotification
         Log::info("Notification Data:");
 
         $data['email_body'] = $this->getEmailTemplate($subject)->with([
-            'question_url' => $data['question_url'],
-            'answer_url' => $data['answer_url'],
+            'question_user_name' => $data['question_user_name'],
+            'question_url'       => $data['question_url'],
+            'answer_user_url'    => $data['answer_user_url'],
+            'answer_user_name'   => $data['answer_user_name'],
+            'answer_url'         => $data['answer_url'],
         ])->render();
 
         $data['email_subject'] = $this->email_subjects[$subject];
