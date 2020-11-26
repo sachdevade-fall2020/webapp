@@ -80,6 +80,10 @@ class User extends Authenticatable
         return [];
     }
 
+    public function getFullNameAttribute(){
+        return $this->first_name." ".$this->last_name;
+    }
+
     /**
      * Get the questions of the user.
      */
