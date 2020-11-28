@@ -1,0 +1,1 @@
+<a href="{{ $answer_url }}">Answer</a> is {{$action}} for your <a href="{{ $question_url }}">Question</a>.
