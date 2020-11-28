@@ -46,9 +46,9 @@ class SendNotification
 
         $data['email_subject'] = $this->email_subjects[$subject];
         
-        Log::info("SNS Message - START");
-        Log::info($data);
-        Log::info("SNS Message - END");
+        Log::info("SNS $subject Message - START");
+        Log::info(json_encode($data));
+        Log::info("SNS $subject Message - END");
 
         try{
             $this->client->publish([
