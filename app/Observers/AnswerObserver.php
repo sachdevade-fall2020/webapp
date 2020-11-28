@@ -84,12 +84,9 @@ class AnswerObserver
 
         $data = [
             'question_id'         => data_get($question, 'id'),
-            'question_user_name'  => data_get($question, 'user.full_name'),
             'question_user_email' => data_get($question, 'user.username'),
             'question_url'        => route('question.get', ['id' => data_get($question, 'id')]),
             'answer_id'           => data_get($answer, 'id'),
-            'answer_user_url'     => route('user.details', ['id' => data_get($answer, 'user.id')]),
-            'answer_user_name'    => data_get($answer, 'user.full_name'),
             'answer_user_email'   => data_get($answer, 'user.username'),
             'answer_text'         => data_get($answer, 'answer_text'),
             'answer_url'          => route('answer.get', ['question_id' => data_get($question, 'id'), 'id' => data_get($answer, 'id')]),
